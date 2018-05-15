@@ -21,7 +21,7 @@
             </label>
           </li>
           <li>
-            <label>end wrtansiith the letter
+            <label>end with the letter
               <input type="text" v-model="endLetter" placeholder="single letter">
             </label>
           </li>
