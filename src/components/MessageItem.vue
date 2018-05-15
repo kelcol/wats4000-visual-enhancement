@@ -1,13 +1,13 @@
 <template>
-  <transition name="fade" appear tag="div">
+  <transition name="fade" appear v-on:enter="timeout" tag="div">
     <li v-bind:class="[message.type, 'message']" v-show="showMessage">
       {{ message.text }}
-      <button v-on:click="close">Close</button>
     </li>
   </transition>
 </template>
 
 <script>
+
 require('vue2-animate/dist/vue2-animate.min.css');
 // Each Message Item expects a `message` object.
 // Each message should have the following properties:
@@ -25,10 +25,12 @@ export default {
     }
   },
   methods: {
-    close: function () {
-      this.showMessage = false;
-    }
+    timeout: function() {
+      setTimeout(() => {
+        this.showMessage = false;
+      }, 1400)
   }
+}
 }
 </script>
 
