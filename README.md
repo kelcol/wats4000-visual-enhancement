@@ -24,22 +24,22 @@ components. We will also use a load spinner from Spinkit.
 ## Basic Requirements
 To complete this project, we must fulfill the following requirements.
 
-* Use the `showSpinner` value to modulate the display of the `CubeSpinner` component when appropriate
-* Add an animation to the items of the WordList for when new items are added and removed
-* Add an animation to the items of the results list when a search is completed
-* Add messaging to results display area let the user know when no results are found
-* Add global messaging child component (`MessageContainer`) to `WordSearch` component
-* Add a global "success" message to let the user know that a word has been successfully added to the WordList
-* Add a global "info" message to let the user know when they try to add a word to the WordList that has already been added
-* Add a global "success" message to let the user know that a word has been successfully removed from the WordList
-* Add a global "error" message to display any errors from the API request (aside from "no results found")
+- [X] Use the `showSpinner` value to modulate the display of the `CubeSpinner` component when appropriate
+- [X] Add an animation to the items of the WordList for when new items are added and removed
+- [X] Add an animation to the items of the results list when a search is completed
+- [X] Add messaging to results display area let the user know when no results are found
+- [X] Add global messaging child component (`MessageContainer`) to `WordSearch` component
+- [X] Add a global "success" message to let the user know that a word has been successfully added to the WordList
+- [X] Add a global "info" message to let the user know when they try to add a word to the WordList that has already been added
+- [X] Add a global "success" message to let the user know that a word has been successfully removed from the WordList
+- [X] Add a global "error" message to display any errors from the API request (aside from "no results found")
 
 ## Stretch Goals
 If we crave more challenges, try tackling some of these suggestions.
 
-* Try making custom animations for everything, and don't use `vue2-animate` animations at all
-* Add a shuffle feature to the wordlist along with the accompanying animation
-* Make other layout or design improvements that help the application be more helpful to our users
+- [ ] Try making custom animations for everything, and don't use `vue2-animate` animations at all
+- [ ] Add a shuffle feature to the wordlist along with the accompanying animation
+- [ ] Make other layout or design improvements that help the application be more helpful to our users
 
 ## Build Setup for Project
 
