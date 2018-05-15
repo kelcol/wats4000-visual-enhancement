@@ -1,57 +1,82 @@
 <template>
   <div>
     <div class="messages">
-      <!-- TODO: Add message-container and supply messages property. -->
+      <message-container v-bind:messages="messages"></message-container>
     </div>
     <div class="word-search">
       <form v-on:submit.prevent="findWords">
-        <p><label>Find synonyms for <input type="text" v-model="phrase" placeholder="word or phrase"> that:</label></p>
+        <p>
+          <label>Find synonyms for
+            <input type="text" v-model="phrase" placeholder="word or phrase"> that:</label>
+        </p>
         <ul>
-          <li><label>sounds like <input type="text" v-model="soundsLike" placeholder="word or phrase"></label></li>
-          <li><label>start with the letter <input type="text" v-model="startLetter" placeholder="single letter"></label></li>
-          <li><label>end with the letter <input type="text" v-model="endLetter" placeholder="single letter"></label></li>
+          <li>
+            <label>sounds like
+              <input type="text" v-model="soundsLike" placeholder="word or phrase">
+            </label>
+          </li>
+          <li>
+            <label>start with the letter
+              <input type="text" v-model="startLetter" placeholder="single letter">
+            </label>
+          </li>
+          <li>
+            <label>end wrtansiith the letter
+              <input type="text" v-model="endLetter" placeholder="single letter">
+            </label>
+          </li>
         </ul>
-        <p><button type="submit">Search</button></p>
+        <p>
+          <button type="submit">Search</button>
+        </p>
       </form>
     </div>
     <div class="word-list-container">
       <h2>Word List</h2>
       <ul class="word-list">
-        <!-- TODO: Add transition-group around the list item here to animate items in the word list. -->
-          <li v-for="word in wordList">{{ word }}&nbsp;<button v-on:click="removeWord(word)" class="remove-word">x</button></li>
+        <transition-group name="slideRight" tag="div" appear>
+          <li v-for="word in wordList" v-bind:key="word">{{ word }}&nbsp;
+            <button v-on:click="removeWord(word)" class="remove-word">x</button>
+          </li>
+        </transition-group>
       </ul>
     </div>
     <div class="results-container">
-      <!-- TODO: Add spinner here to show when search is in progress. -->
+      <spinner v-if="showSpinner"></spinner>
       <h2 v-if="results && results.length > 0">{{ results.length }} Words Found</h2>
       <ul v-if="results && results.length > 0" class="results">
-        <!-- TODO: Add transition-group around the list item here to animate items in the results list. -->
-          <li v-for="item in results" class="item">
+        <transition-group name="fade" tag="div" appear>
+          <li v-for="item in results" class="item" v-bind:key="item.word">
             <p class="result-word">{{ item.word }}</p>
-            <p><button v-on:click="addWord(item.word)" class="add-word">Add to WordList</button></p>
+            <p>
+              <button v-on:click="addWord(item.word)" class="add-word">Add to WordList</button>
+            </p>
           </li>
+        </transition-group>
       </ul>
-      <!-- TODO: Add message to display here if no results are found. -->
-
-
+      <div v-else-if="results && results.length == 0" class="no-results">
+        <h2>No Results Found</h2>
+        <p>Please adjust your search to find more words.</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+
 import axios from 'axios';
-// Note: vue2-animate is added using the require statement because it is a CSS file
 require('vue2-animate/dist/vue2-animate.min.css');
-// TODO: Import CubeSpinner for use as a child component
-// TODO: Import MessageContainer for use as a child component
+
+import CubeSpinner from '@/components/CubeSpinner';
+import MessageContainer from '@/components/MessageContainer';
 
 
 export default {
   name: 'WordSearch',
   components: {
-    // TODO: Define child components here.
-
-  },
+    spinner: CubeSpinner,
+    'message-container': MessageContainer
+    },
   data () {
     return {
       results: null,
@@ -67,40 +92,47 @@ export default {
   methods: {
     addWord: function (word) {
       if (this.wordList.indexOf(word) === -1) {
-        this.wordList.push(word);
-        console.log(`Added ${word} to wordList.`);
-        // TODO: Add message to this.messages to reflect this change.
-
+        this.wordList.push(word);        
+        this.messages.push({
+          type: 'success',
+          text: `Added ${word} to WordList.`
+        });
       } else {
-        console.log('Word is already on wordlist.');
-        // TODO: Add message to this.messages to reflect this change.
-
+        this.messages.push({
+          type: 'info',
+          text: `${word} is already on wordlist.`
+        })
       }
     },
     removeWord: function (word) {
       this.wordList.splice(this.wordList.indexOf(word), 1);
-      // TODO: Add message to this.messages to reflect this change.
-
+      this.messages.push({
+      type: 'success',
+      text: `${word} removed from WordList.`
+    });
     },
     findWords: function() {
-      // TODO: Show spinner when API request begins here.
+      // Show spinner when API request begins here.
+      this.showSpinner = true;
       this.results = null;
       axios.get('https://api.datamuse.com/words', {
         params: {
-          ml: this.phrase,
           sl: this.soundsLike,
           sp: `${this.startLetter}*${this.endLetter}`
         }
       })
       .then( response => {
-        // TODO: Turn off spinner.
+        // Turn off spinner.
+        this.showSpinner = false;
         this.results = response.data;
       })
       .catch( error => {
-        // TODO: Turn off spinner
-
-        // TODO: Add message to this.messages to display the errors.
-
+        // Turn off spinner        
+        this.showSpinner = false;
+        this.messages.push({
+          type: 'error',
+          text: error.message
+        });
       })
     }
   }

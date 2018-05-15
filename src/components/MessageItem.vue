@@ -2,7 +2,7 @@
   <transition name="fade" appear tag="div">
     <li v-bind:class="[message.type, 'message']" v-show="showMessage">
       {{ message.text }}
-      <button v-on:click="close">close</button>
+      <button v-on:click="close">Close</button>
     </li>
   </transition>
 </template>
